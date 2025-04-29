@@ -253,13 +253,13 @@ submitBtn.addEventListener("click", () => {
     category = "Toxic Alert Zone";
   } */
 
-if (incorrectAnswers <= 3) {
-  category = "Toxic Free Zone";
-} else if (incorrectAnswers <= 6) {
-  category = "Caution Ahead Zone";
-} else {
-  category = "Toxic Alert Zone";
-}
+ if (percentage <= 39) {
+    category = "Toxic Free Zone";       // 0-39% (Good)
+  } else if (percentage <= 69) {
+    category = "Caution Ahead Zone";    // 40-69% (Moderate)
+  } else {
+    category = "Toxic Alert Zone";      // 70-100% (Bad)
+  }
 
   // Calculate the total score (average of selected answers)
  /* const total = selectedScores.reduce((acc, score) => acc + score, 0);
@@ -268,6 +268,9 @@ if (incorrectAnswers <= 3) {
   // Redirect to loading page first
   window.location.href = `loading.html?score=${percentage}&category=${encodeURIComponent(category)}`;
 });
+
+ 
+
 
 // On loading.html you can put a script like this:
 if (window.location.pathname.includes('loading.html')) {
