@@ -1,0 +1,41 @@
+/* Loading CSS */
+body.page-loading {
+    background: linear-gradient(180deg, #316631 0%, #006B00 70.7%, #003800 100%);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .gauge-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .page-loading .gauge-section svg{
+    width: 100%;
+  }
+  text#count {
+    font-weight: 600;
+  }
+  
+  .calculating-label {
+    margin-top: 45px;
+    text-align: center;
+    color: #fff;
+    text-shadow:
+      0 0 8px #FCF40280,
+      1px 1px 3px #00000066;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
+  @media (max-width: 600px) {
+    .page-loading .gauge-section svg{
+      width: 90%;
+    }
+    .calculating-label {
+      margin-top: 16px;
+    }
+   }

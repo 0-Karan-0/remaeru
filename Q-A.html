@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Work Stress Quiz</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/q_a.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    .hidden { display: none; }
+    .result { font-size: 1.2rem; margin-top: 20px; text-align: center; }
+  </style>
+</head>
+<body class="page-qa">
+  <div class="container">
+    <div class="header-bar">
+      <a href="page_2.html" class="back-arrow" id="backBtn" tabindex="0" aria-label="Back">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+      <div class="question-indicator">
+        Question <b id="current-question">1</b><span>/10</span>
+      </div>
+    </div>
+
+    <div style="flex: 1; margin: 0 14px;">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-bar" style="width: 10%;"></div>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <div class="emoji">
+        <img id="emoji-img" src="assets/imgs/q-img/q-1.png" alt="">
+      </div>
+      <div class="question-text" id="question-text"></div>
+      <hr class="card-divider" />
+      <div class="answers" id="answer-buttons"></div>
+    </div>
+
+    <div class="footer-row">
+      <button class="back-btn" id="back-btn" disabled>
+        <img src="assets/imgs/icons/left-arrow.svg" alt=""> Back 
+      </button>
+      <button class="next-btn" id="next-btn" disabled>
+        <span>Next</span> 
+        <img src="assets/imgs/icons/right-arrow.svg" alt="">
+      </button>
+      <button id="submit-btn" class="play-btn" style="display:none;"><span>SUBMIT</span></button>
+    </div>
+
+    <div class="result hidden" id="result-container"></div>
+  </div>
+   
+   <!-- Halfway popup -->
+    <div class="halfway-popup" id="halfwayPopup" style="display: none;">
+        <div class="middle-box">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: 50%;"></div>
+          </div>
+          <div class="halfway-text">You’re
+            <span><strong>HALF WAY</strong></span> 
+             there !</div>
+        </div>
+      </div>
+
+  <script>
+const questions = [
+  {
+    question: "How often do you feel stressed or anxious because of work-related issues?",
+    answers: ["Rarely", "Sometimes", "Frequently"],
+    scores: [10, 50, 90],
+    emoji: "assets/imgs/q-img/q-1.png"
+  },
+  {
+    question: "Do colleagues or superiors make inappropriate jokes or comments?",
+    answers: ["Never", "Occasionally", "Often"],
+    scores: [10, 50, 90],
+    emoji: "assets/imgs/q-img/q-2.png"
+  },
+  {
+    question: "Are you expected to answer work calls or emails outside of office hours?",
+    answers: ["Rarely", "Sometimes", "Always"],
+    scores: [10, 50, 90],
+    emoji: "assets/imgs/q-img/q-3.png"
+  },
+  {
+    question: "How is feedback given in your workplace?",
+    answers: ["Constructively & respectfully", "Sometimes constructive/ sometimes critical", "Usually harsh or dismissive"],
+    scores: [10, 50, 90],
+    emoji: "assets/imgs/q-img/q-4.png"
+  },
+  {
+    question: "Do you notice favouritism or bias in promotions or assignments?",
+    answers: ["Not at all", "Occasionally", "Frequently"],
+    scores: [10, 50, 90],
+    emoji: "assets/imgs/q-img/q-5.png"
+  },
+  {
+    question: "Does your workplace encourage or support work-life balance?",
+    answers: ["Yes, actively", "Somewhat", "Not at all"],
+    scores: [10, 50, 90],
+    emoji: "assets/imgs/q-img/q-6.png"
+  },
+  {
+    question: "Are you given unrealistic deadlines or workloads?",
+    answers: ["Never", "Sometimes", "Often"],
+    scores: [10, 50, 90],
+    emoji: "assets/imgs/q-img/q-7.png"
+  },
+  {
+    question: "Do you feel comfortable voicing concerns or opinions at work?",
+    answers: ["Always", "Sometimes", "Never"],
+    scores: [10, 50, 90],
+    emoji: "assets/imgs/q-img/q-8.png"
+  },
+  {
+    question: "Have you experienced bullying, gossip, or other toxic behaviours from colleagues or managers?",
+    answers: ["Never", "Rarely", "Often"],
+    scores: [10, 50, 90],
+    emoji: "assets/imgs/q-img/q-9.png"
+  },
+  {
+    question: "Does your workplace culture support mental health and well-being?",
+    answers: ["Yes, strongly", "Somewhat", "Not at all"],
+    scores: [10, 50, 90],
+    emoji: "assets/imgs/q-img/q-10.png"
+  }
+];
+
+let currentQuestionIndex = 0;
+let totalScore = 0;
+let incorrectAnswers = 0;
+let selectedScores = Array(questions.length).fill(null);
+let halfwayShown = false;
+
+const questionText = document.getElementById("question-text");
+const answerButtons = document.getElementById("answer-buttons");
+const nextBtn = document.getElementById("next-btn");
+const backBtn = document.getElementById("back-btn");
+const progressBar = document.getElementById("progress-bar");
+const currentQText = document.getElementById("current-question");
+const resultContainer = document.getElementById("result-container");
+const quizContainer = document.querySelector(".quiz-card");
+const footerRow = document.querySelector(".footer-row");
+const halfwayPopup = document.getElementById("halfwayPopup");
+const submitBtn = document.getElementById("submit-btn");
+const emojiImg = document.getElementById("emoji-img");
+
+function loadQuestion() {
+  // halfway popup at question 6
+  if (currentQuestionIndex === 5 && !halfwayShown) {
+    halfwayShown = true;
+    quizContainer.style.display = 'none';
+    footerRow.style.display = 'none';
+    halfwayPopup.style.display = 'flex';
+
+    setTimeout(() => {
+      halfwayPopup.style.display = 'none';
+      quizContainer.style.display = 'block';
+      footerRow.style.display = 'flex';
+      loadQuestion();
+    }, 1500);
+    return;
+  }
+
+  const q = questions[currentQuestionIndex];
+  questionText.textContent = q.question;
+  currentQText.textContent = currentQuestionIndex + 1;
+  progressBar.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100 }%`;
+  
+  emojiImg.src = q.emoji;
+
+  answerButtons.innerHTML = "";
+  q.answers.forEach((text, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "answer-btn";
+    btn.textContent = text;
+    btn.tabIndex = 0;
+    btn.addEventListener("click", () => selectAnswer(idx));
+    if (selectedScores[currentQuestionIndex] === q.scores[idx]) {
+      btn.classList.add("selected");
+      nextBtn.disabled = false;
+      nextBtn.classList.add("active");
+    }
+    answerButtons.appendChild(btn);
+  });
+
+  // Handling button visibility
+  backBtn.disabled = currentQuestionIndex === 0;
+  
+  if (currentQuestionIndex === questions.length - 1) {
+    nextBtn.style.display = "none";
+    submitBtn.style.display = "inline-block";
+  } else {
+    nextBtn.style.display = "inline-block";
+    submitBtn.style.display = "none";
+  }
+
+  // Fix next button inner HTML (with icon)
+  nextBtn.innerHTML = `Next <span><img src="assets/imgs/icons/right-arrow.svg" alt=""></span>`;
+  nextBtn.disabled = selectedScores[currentQuestionIndex] === null;
+}
+
+function selectAnswer(index) {
+  const buttons = document.querySelectorAll(".answer-btn");
+  buttons.forEach(btn => btn.classList.remove("selected"));
+  buttons[index].classList.add("selected");
+
+  selectedScores[currentQuestionIndex] = questions[currentQuestionIndex].scores[index];
+  nextBtn.disabled = false;
+  nextBtn.classList.add("active");
+}
+
+nextBtn.addEventListener("click", () => {
+  if (currentQuestionIndex < questions.length - 1) {
+    currentQuestionIndex++;
+    loadQuestion();
+  }
+});
+
+backBtn.addEventListener("click", () => {
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    loadQuestion();
+  }
+});
+
+// Submit button action
+submitBtn.addEventListener("click", () => {
+  // Count incorrect answers
+  incorrectAnswers = selectedScores.filter((score, index) => score !== questions[index].scores[0]).length;
+
+  // Calculate percentage based on incorrect answers
+  const percentage = ((10 - incorrectAnswers) / 10) * 100;
+
+  let category = '';
+
+  // Assign category based on percentage
+  // if (percentage >= 70) {
+  //   category = "Toxic Free Zone";  // 70-100%
+  // } else if (percentage >= 40) {
+  //   category = "Caution Ahead";  // 40-69%
+  // } else {
+  //   category = "Toxic Alert";  // 0-39%
+  // }
+
+  if (percentage >= 10 && percentage <= 32) {
+    category = "Toxic Free Zone";
+  } else if (percentage >= 33 && percentage <= 65) {
+    category = "Caution Ahead Zone";
+  } else if (percentage >= 66 && percentage <= 100) {
+    category = "Toxic Alert Zone";
+  }
+
+  // Calculate the total score (average of selected answers)
+  const total = selectedScores.reduce((acc, score) => acc + score, 0);
+  const average = Math.round(total / questions.length);
+
+  // Redirect to loading page first
+  window.location.href = `loading.html?score=${average}&category=${category}`;
+});
+
+// On loading.html you can put a script like this:
+if (window.location.pathname.includes('loading.html')) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const score = urlParams.get('score');
+  const category = urlParams.get('category');
+
+  setTimeout(() => {
+    window.location.href = `result.html?score=${score}&category=${category}`;
+  }, 2000); // 2 seconds
+}
+
+// On result.html you can fetch score and category like:
+if (window.location.pathname.includes('result.html')) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const score = urlParams.get('score');
+  const category = urlParams.get('category');
+  document.getElementById('result-container').innerHTML = `Your Work Stress Score: <b>${score}/100</b><br>Category: <b>${category}</b>`;
+}
+
+loadQuestion();
+</script>
+  
+</body>
+</html>

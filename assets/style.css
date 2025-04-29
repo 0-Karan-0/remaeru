@@ -1,0 +1,221 @@
+@font-face {
+  font-family: 'joti-one';
+  src: url('fonts/JotiOne-Regular.ttf') format('truetype');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'roboto';
+  src: url('fonts/Roboto-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'roboto';
+  src: url('fonts/Roboto_SemiCondensed-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'quicksand';
+  src: url('fonts/Quicksand-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'raleway';
+  src: url('fonts/Raleway-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'raleway';
+  src: url('fonts/Raleway-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
+/* Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  list-style: none;
+  word-wrap: break-word;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'raleway';
+  font-weight: 400;
+  overflow-x: hidden;
+  color: #fff;
+  -webkit-text-size-adjust: 100%;
+  overflow-y: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer !important;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  justify-content: flex-start;
+  position: relative;
+  padding-bottom: 20vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 980px;
+  padding: clamp(16px, 3vw, 24px) clamp(12px, 2vw, 0);
+  margin: 0 auto;
+}
+
+/* Buttons */
+.play-btn {
+  position: relative;
+  font-weight: 400;
+  font-size: clamp(18px, 5vw, 24px);
+  font-family: 'joti-one';
+  color: #fff;
+  border-radius: 8px;
+  padding: 25px 56px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: box-shadow 0.14s, background 0.14s;
+  margin-bottom: 22px;
+  outline: none;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  box-shadow: 0px 1.56px 0px 0px #00000073;
+  border: 1.17px solid #030303;
+  background: linear-gradient(180deg, #F9F9F9 0%, #8AB260 20.31%, #569119 92.19%);
+  overflow: hidden;
+}
+
+.play-btn {
+  background: linear-gradient(180deg, #F9F9F9 0%, #8AB260 20.31%, #569119 92.19%);
+  margin: 1vh 0 2vh;
+}
+
+.play-btn::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  right: 6px;
+  height: 41px;
+  background: linear-gradient(180deg, #CEF16C 0%, #A5DB4B 21.35%, #83C830 50%, #6EBD1F 92.19%);
+  border-radius: 8px;
+}
+
+.play-btn::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 12px;
+  right: 12px;
+  height: 25px;
+  background: linear-gradient(180deg, #E4FB94 0%, #C1E95B 92.19%);
+  border-radius: 6px;
+}
+#submit-btn{
+  padding: 11px 40px;
+}
+
+/* Custom Share BTN */
+.share-btn {
+  position: relative;
+  font-weight: 400;
+  font-size: 24px;
+  font-family: 'joti-one';
+  color: #fff;
+  border-radius: 8px;
+  padding: 12px 35px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: box-shadow 0.14s, background 0.14s;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  box-shadow: 0px 1.56px 0px 0px #00000073;
+  border: 1.17px solid #030303;
+  background: linear-gradient(180deg, #E7E7E7 0%, #F6F6F6 20.31%, #FFFFFF 92.19%);
+  overflow: hidden;
+}
+
+.share-btn::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  height: 41px;
+  background: linear-gradient(180deg, #C7C7C7 0%, #D4D4D4 21.35%, #E0E0E0 50%, #FAFAFA 92.19%);
+  border-radius: 8px;
+}
+
+.share-btn::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 12px;
+  right: 12px;
+  height: 25px;
+  background: linear-gradient(180deg, #F2F2F2 7.81%, #FFFFFF 100%);
+  border-radius: 6px;
+}
+
+.play-btn span, .share-btn span {
+  position: relative;
+  z-index: 1;
+  line-height: 0;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.play-btn:hover, .share-btn:hover {
+  box-shadow: 0 5px 18px 0 #9dff66, 0 4px 20px 0 #4bff2070;
+  border-color: #85da19;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+}
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+  .play-btn {
+    padding: 2.6vh 6vw;
+  }
+}
+@supports (-webkit-touch-callout: none) {
+  .main-container {
+    padding-bottom: 25vh; 
+  }
+  .play-btn, .share-btn {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
