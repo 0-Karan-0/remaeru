@@ -245,20 +245,28 @@ submitBtn.addEventListener("click", () => {
   //   category = "Toxic Alert";  // 0-39%
   // }
 
-  if (percentage >= 10 && percentage <= 32) {
+  /* if (percentage >= 10 && percentage <= 32) {
     category = "Toxic Free Zone";
   } else if (percentage >= 33 && percentage <= 65) {
     category = "Caution Ahead Zone";
   } else if (percentage >= 66 && percentage <= 100) {
     category = "Toxic Alert Zone";
-  }
+  } */
+
+if (incorrectAnswers <= 3) {
+  category = "Toxic Free Zone";
+} else if (incorrectAnswers <= 6) {
+  category = "Caution Ahead Zone";
+} else {
+  category = "Toxic Alert Zone";
+}
 
   // Calculate the total score (average of selected answers)
-  const total = selectedScores.reduce((acc, score) => acc + score, 0);
-  const average = Math.round(total / questions.length);
+ /* const total = selectedScores.reduce((acc, score) => acc + score, 0);
+  const average = Math.round(total / questions.length); */
 
   // Redirect to loading page first
-  window.location.href = `loading.html?score=${average}&category=${category}`;
+  window.location.href = `loading.html?score=${percentage}&category=${encodeURIComponent(category)}`;
 });
 
 // On loading.html you can put a script like this:
