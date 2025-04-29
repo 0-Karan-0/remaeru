@@ -71,7 +71,7 @@ a {
   width: 100vw;
   justify-content: flex-start;
   position: relative;
-  padding-bottom: 20vh;
+  /*  padding-bottom: 20vh; */
 }
 
 .container {
